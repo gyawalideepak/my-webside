@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 400px;
+            margin: auto;
+            text-align: center;
+        }
+        input, button {
+            padding: 8px;
+            margin: 5px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            background: #f4f4f4;
+            margin: 5px 0;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .completed {
+            text-decoration: line-through;
+            color: gray;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>To-Do List</h1>
+    
+    <input type="text" id="taskInput" placeholder="Enter a task">
+    <button onclick="addTask()">Add Task</button>
+    
+    <h2>Planned</h2>
+    <ul id="plannedTasks"></ul>
+
+    <h2>Completed</h2>
+    <ul id="completedTasks"></ul>
+
+    <script>
+        function addTask() {
+            let taskInput = document.getElementById("taskInput");
+            let taskText = taskInput.value.trim();
+            if (taskText === "") return;
+
+            let li = document.createElement("li");
+            li.innerHTML = `
+                <span>${taskText}</span>
+                <button onclick="markComplete(this)">✔</button>
+                <button onclick="editTask(this)">✏</button>
+                <button onclick="deleteTask(this)">❌</button>
+            `;
+
+            document.getElementById("plannedTasks").appendChild(li);
+            taskInput.value = "";
+        }
+
+        function markComplete(button) {
+            let li = button.parentElement;
+            li.classList.add("completed");
+            button.remove(); // Remove the complete button after marking
+            document.getElementById("completedTasks").appendChild(li);
+        }
+
+        function editTask(button) {
+            let li = button.parentElement;
+            let taskText = li.firstChild.textContent;
+            let newText = prompt("Edit task:", taskText);
+            if (newText !== null && newText.trim() !== "") {
+                li.firstChild.textContent = newText;
+            }
+        }
+
+        function deleteTask(button) {
+            button.parentElement.remove();
+        }
+    </script>
+
+</body>
+</html>
